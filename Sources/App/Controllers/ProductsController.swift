@@ -47,17 +47,20 @@ public final class ProductsController {
   }
   
   internal func create(request: Request) throws -> ResponseRepresentable {
+    try request.verifyIsAuthorizedAdmin()
     var product = try request.product()
     try product.save()
     return try product.makeJSON()
   }
   
   internal func delete(request: Request, product: Product) throws -> ResponseRepresentable {
+    try request.verifyIsAuthorizedAdmin()
     try product.delete()
     return JSON([:])
   }
   
   internal func update(request: Request, product: Product) throws -> ResponseRepresentable {
+    try request.verifyIsAuthorizedAdmin()
     let new = try request.product()
     var product = product
     product.update(new)
