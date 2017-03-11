@@ -1,0 +1,4 @@
+2	user@example.com	Basic	f	User	$2a$10$QEKDSmkQCkRIlG9il5vQ3eaUG25BnibCkotdfZala7movvKdgP47u	18005551111
+1	admin@example.com	Super	t	Admin	$2a$10$ijcS0NoJO65AnX8K4gK0Kukx55pV1O5TtYGNObjZ8OGZNI1zJDukW	18005551234
+3	jrg.developer@gmail.com	Joshua	f	Greene	$2a$10$dzSobytGUC64U2bwX4SrZuoPPFpty1.fxJbWvDNe6ec9hke7r5Cka	18005551234
+4	johnny.test@example.com	Johnny	f	Test	$2a$10$nmXYMk6uPhBL0NGE8Akrq.zkb9x5H0uGq7wnVPaMvZtJMsahduJmq	18005551234
