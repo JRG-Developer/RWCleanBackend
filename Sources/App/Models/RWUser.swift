@@ -217,8 +217,7 @@ extension Request {
   }
   
   public func verifyIsAuthorizedAdmin() throws {
-    let authUser = try basicUser()
-    guard authUser.isAdmin else {
+    guard let authUser = try? basicUser(), authUser.isAdmin else {
       throw AuthError.invalidAccountType.abortError
     }
   }

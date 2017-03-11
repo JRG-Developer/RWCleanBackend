@@ -29,8 +29,7 @@ import Vapor
 
 public final class RWUserController {
   
-  public func addRoutes(drop: Droplet) {
-    
+  public func addRoutes(drop: Droplet) {    
     drop.post("login", handler: login)
     drop.get("logout", handler: logout)
     
@@ -39,21 +38,15 @@ public final class RWUserController {
       quotes.post("product", Product.self, handler: postQuote)
     }
     
-    let group = drop.grouped("users")
-    group.get(handler: index)
-    group.post(handler: register)
-    group.get(RWUser.self, handler: index)
-    
-    group.get("homeInfo", handler: getHomeInfo)
-    group.put("homeInfo", handler: putHomeInfo)
+    drop.group("users") { users in
+      users.get(RWUser.self, handler: index)
+      users.post(handler: register)
+      users.get("homeInfo", handler: getHomeInfo)
+      users.put("homeInfo", handler: putHomeInfo)
+    }
   }
   
   // MARK: - Index Users
-  
-  internal func index(request: Request) throws -> ResponseRepresentable {
-    try request.verifyIsAuthorizedAdmin()
-    return try RWUser.all().makeJSON()
-  }
   
   internal func index(request: Request, user: RWUser) throws -> ResponseRepresentable {
     try request.verifyIsAuthorized(user)
@@ -105,8 +98,7 @@ public final class RWUserController {
   }
   
   internal func putHomeInfo(request: Request) throws -> ResponseRepresentable {
-    let user = try request.basicUser()
-    try request.verifyIsAuthorized(user)
+    let user = try request.basicUser()    
     guard let json = request.json else { throw Abort.badRequest }
     let homeInfo = try HomeInfo.instance(bathroomCount: try json.extract(HomeInfo.TableColumnKey.bathroomCount),
                                          bedroomCount: try json.extract(HomeInfo.TableColumnKey.bedroomCount),
@@ -122,11 +114,9 @@ public final class RWUserController {
   
   internal func getQuotes(request: Request) throws -> ResponseRepresentable {
     let user = try request.basicUser()
-    try request.verifyIsAuthorized(user)
     guard let quotes = try user.quotes(), !quotes.isEmpty else {
       throw Abort.notFound
     }
-    
     let publicQuoteNotes: [Node] = try quotes.map { try $0.makePublicNode() }
     return try JSON(node: publicQuoteNotes.makeNode())
   }
